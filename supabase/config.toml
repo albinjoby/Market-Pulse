@@ -1,7 +1,0 @@
-project_id = "kbgkmqvceyjnrqdzrbnm"
-
-[functions.validate-stock]
-verify_jwt = false
-
-[functions.analyze-sentiment]
-verify_jwt = false

@@ -5,28 +5,21 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, TrendingUp, TrendingDown, Minus, BarChart3, Newspaper, Brain } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 interface SentimentData {
   ticker: string;
   sentiment: 'bullish' | 'bearish' | 'neutral';
   confidence: number;
-  momentum: string;
+  momentum: number;
   price: number;
   change: number;
-  changePercent: string;
-  high: number;
-  low: number;
-  volume: number;
+  changePercent: number;
   explanation: string;
-  keyFactors?: string[];
-  news: Array<{
-    title: string;
-    description: string;
+  news: {
+    headline: string;
+    sentiment: string;
     url: string;
-    publishedAt: string;
-    source: string;
-  }>;
+  }[];
 }
 
 const StockAnalyzer = () => {
@@ -47,72 +40,26 @@ const StockAnalyzer = () => {
 
     setLoading(true);
     
-    try {
-      // First validate the stock
-      const { data: validationResult, error: validationError } = await supabase.functions.invoke('validate-stock', {
-        body: { ticker: ticker.trim().toUpperCase() }
-      });
-
-      if (validationError) {
-        throw new Error('Failed to validate stock');
-      }
-
-      if (!validationResult.isValid) {
-        toast({
-          title: "Invalid Stock Symbol",
-          description: validationResult.message || "Please check the ticker symbol and try again.",
-          variant: "destructive",
-        });
-        setLoading(false);
-        return;
-      }
-
-      // If valid, analyze sentiment
-      const { data: sentimentResult, error: sentimentError } = await supabase.functions.invoke('analyze-sentiment', {
-        body: { 
-          ticker: validationResult.ticker,
-          companyName: validationResult.ticker // We'll use ticker as company name for now
-        }
-      });
-
-      if (sentimentError) {
-        throw new Error('Failed to analyze sentiment');
-      }
-
-      // Combine the results
-      const combinedData: SentimentData = {
-        ticker: validationResult.ticker,
-        price: validationResult.price,
-        change: validationResult.change,
-        changePercent: validationResult.changePercent,
-        high: validationResult.high,
-        low: validationResult.low,
-        volume: validationResult.volume,
-        sentiment: sentimentResult.sentiment,
-        confidence: sentimentResult.confidence,
-        momentum: sentimentResult.momentum,
-        explanation: sentimentResult.explanation,
-        keyFactors: sentimentResult.keyFactors,
-        news: sentimentResult.news || []
+    // Simulate API call with mock data
+    setTimeout(() => {
+      const mockData: SentimentData = {
+        ticker: ticker.toUpperCase(),
+        sentiment: Math.random() > 0.5 ? 'bullish' : Math.random() > 0.5 ? 'bearish' : 'neutral',
+        confidence: Math.floor(Math.random() * 30) + 70,
+        momentum: (Math.random() - 0.5) * 10,
+        price: Math.random() * 200 + 50,
+        change: (Math.random() - 0.5) * 20,
+        changePercent: (Math.random() - 0.5) * 8,
+        explanation: `Based on recent market trends and technical analysis, ${ticker.toUpperCase()} shows ${Math.random() > 0.5 ? 'strong' : 'moderate'} momentum indicators. The stock has been ${Math.random() > 0.5 ? 'outperforming' : 'tracking with'} market expectations, with ${Math.random() > 0.5 ? 'positive' : 'mixed'} sentiment from recent news coverage.`,
+        news: [
+          { headline: `${ticker.toUpperCase()} Reports Strong Q4 Earnings`, sentiment: 'positive', url: '#' },
+          { headline: `Analysts Upgrade ${ticker.toUpperCase()} Price Target`, sentiment: 'positive', url: '#' },
+          { headline: `Market Volatility Affects ${ticker.toUpperCase()} Trading`, sentiment: 'neutral', url: '#' },
+        ]
       };
-      
-      setData(combinedData);
-      
-      toast({
-        title: "Analysis Complete",
-        description: `Successfully analyzed ${validationResult.ticker}`,
-      });
-      
-    } catch (error) {
-      console.error('Analysis error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to analyze stock. Please check your API keys and try again.",
-        variant: "destructive",
-      });
-    } finally {
+      setData(mockData);
       setLoading(false);
-    }
+    }, 2000);
   };
 
   const getSentimentIcon = (sentiment: string) => {
@@ -195,17 +142,17 @@ const StockAnalyzer = () => {
                   </div>
                   <div className="text-2xl font-bold">${data.price.toFixed(2)}</div>
                   <div className={`text-sm ${data.change >= 0 ? 'text-bullish' : 'text-bearish'}`}>
-                    {data.change >= 0 ? '+' : ''}{data.change.toFixed(2)} ({data.changePercent})
+                    {data.change >= 0 ? '+' : ''}{data.change.toFixed(2)} ({data.changePercent.toFixed(2)}%)
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <TrendingUp className="w-4 h-4" />
-                    Momentum
+                    Momentum Score
                   </div>
-                  <div className="text-2xl font-bold">{data.momentum}</div>
-                  <div className="text-sm text-muted-foreground">Market trend</div>
+                  <div className="text-2xl font-bold">{data.momentum.toFixed(1)}</div>
+                  <div className="text-sm text-muted-foreground">5-day average</div>
                 </div>
 
                 <div className="space-y-2">
@@ -236,29 +183,17 @@ const StockAnalyzer = () => {
               </h3>
               <div className="space-y-3">
                 {data.news.map((item, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 bg-card/30 rounded-lg hover:bg-card/40 transition-colors">
-                    <div className="w-2 h-2 rounded-full mt-2 bg-primary" />
+                  <div key={index} className="flex items-start gap-3 p-3 bg-card/30 rounded-lg">
+                    <div className={`w-2 h-2 rounded-full mt-2 ${
+                      item.sentiment === 'positive' ? 'bg-bullish' :
+                      item.sentiment === 'negative' ? 'bg-bearish' : 'bg-neutral'
+                    }`} />
                     <div className="flex-1">
-                      <a 
-                        href={item.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="font-medium hover:text-primary transition-colors"
-                      >
-                        {item.title}
-                      </a>
-                      <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2">
-                        <span>{item.source}</span>
-                        <span>•</span>
-                        <span>{new Date(item.publishedAt).toLocaleDateString()}</span>
-                      </div>
+                      <p className="font-medium">{item.headline}</p>
+                      <p className="text-sm text-muted-foreground capitalize">{item.sentiment} sentiment</p>
                     </div>
                   </div>
                 ))}
-                {data.news.length === 0 && (
-                  <p className="text-muted-foreground text-center py-4">No recent news available</p>
-                )}
               </div>
             </Card>
           </div>

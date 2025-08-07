@@ -8,6 +8,10 @@
 
 A sophisticated AI-powered stock sentiment analysis platform that provides real-time market insights by combining technical analysis, news sentiment, and AI-driven predictions. Built with modern web technologies and production-ready infrastructure.
 
+## Preview
+
+![Image](https://github.com/user-attachments/assets/33ba68b7-34dd-49fb-8a70-29de396cfd7f)
+
 ## ✨ Core Features
 
 ### 🔍 **Smart Stock Analysis**

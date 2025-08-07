@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticker-pulse-ai-service
+  labels:
+    app: ticker-pulse-ai
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8081
+      protocol: TCP
+      name: http
+  selector:
+    app: ticker-pulse-ai
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ticker-pulse-ai-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - ticker-pulse-ai.yourdomain.com
+      secretName: ticker-pulse-ai-tls
+  rules:
+    - host: ticker-pulse-ai.yourdomain.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ticker-pulse-ai-service
+                port:
+                  number: 80

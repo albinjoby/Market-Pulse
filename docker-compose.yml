@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  market-pulse-frontend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - market-pulse-network
+
+  # Optional: Add Supabase local development
+  supabase:
+    image: supabase/supabase:latest
+    ports:
+      - "54321:54321"
+    environment:
+      - POSTGRES_PASSWORD=your-super-secret-and-long-postgres-password
+    volumes:
+      - supabase-data:/var/lib/postgresql/data
+    networks:
+      - market-pulse-network
+
+networks:
+  market-pulse-network:
+    driver: bridge
+
+volumes:
+  supabase-data:

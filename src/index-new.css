@@ -69,21 +69,31 @@
     --chart-5: 27 87% 67%;
 
     /* Gradients for light mode */
-    --gradient-glass: linear-gradient(135deg, 
-      hsl(var(--card) / 0.7) 0%, 
-      hsl(var(--card) / 0.3) 100%);
-    --gradient-primary: linear-gradient(135deg, 
-      hsl(var(--primary)) 0%, 
-      hsl(var(--primary) / 0.8) 100%);
-    --gradient-bullish: linear-gradient(135deg, 
-      hsl(var(--bullish)) 0%, 
-      hsl(var(--bullish) / 0.8) 100%);
-    --gradient-bearish: linear-gradient(135deg, 
-      hsl(var(--bearish)) 0%, 
-      hsl(var(--bearish) / 0.8) 100%);
-    --gradient-neutral: linear-gradient(135deg, 
-      hsl(var(--neutral)) 0%, 
-      hsl(var(--neutral) / 0.8) 100%);
+    --gradient-glass: linear-gradient(
+      135deg,
+      hsl(var(--card) / 0.7) 0%,
+      hsl(var(--card) / 0.3) 100%
+    );
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--primary) / 0.8) 100%
+    );
+    --gradient-bullish: linear-gradient(
+      135deg,
+      hsl(var(--bullish)) 0%,
+      hsl(var(--bullish) / 0.8) 100%
+    );
+    --gradient-bearish: linear-gradient(
+      135deg,
+      hsl(var(--bearish)) 0%,
+      hsl(var(--bearish) / 0.8) 100%
+    );
+    --gradient-neutral: linear-gradient(
+      135deg,
+      hsl(var(--neutral)) 0%,
+      hsl(var(--neutral) / 0.8) 100%
+    );
 
     /* Shadows for light mode */
     --shadow-glass: 0 8px 32px hsl(var(--foreground) / 0.1);
@@ -167,21 +177,31 @@
     --chart-5: 340 75% 55%;
 
     /* Gradients for dark mode */
-    --gradient-glass: linear-gradient(135deg, 
-      hsl(var(--card) / 0.7) 0%, 
-      hsl(var(--card) / 0.3) 100%);
-    --gradient-primary: linear-gradient(135deg, 
-      hsl(var(--primary)) 0%, 
-      hsl(var(--primary) / 0.8) 100%);
-    --gradient-bullish: linear-gradient(135deg, 
-      hsl(var(--bullish)) 0%, 
-      hsl(var(--bullish) / 0.8) 100%);
-    --gradient-bearish: linear-gradient(135deg, 
-      hsl(var(--bearish)) 0%, 
-      hsl(var(--bearish) / 0.8) 100%);
-    --gradient-neutral: linear-gradient(135deg, 
-      hsl(var(--neutral)) 0%, 
-      hsl(var(--neutral) / 0.8) 100%);
+    --gradient-glass: linear-gradient(
+      135deg,
+      hsl(var(--card) / 0.7) 0%,
+      hsl(var(--card) / 0.3) 100%
+    );
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--primary) / 0.8) 100%
+    );
+    --gradient-bullish: linear-gradient(
+      135deg,
+      hsl(var(--bullish)) 0%,
+      hsl(var(--bullish) / 0.8) 100%
+    );
+    --gradient-bearish: linear-gradient(
+      135deg,
+      hsl(var(--bearish)) 0%,
+      hsl(var(--bearish) / 0.8) 100%
+    );
+    --gradient-neutral: linear-gradient(
+      135deg,
+      hsl(var(--neutral)) 0%,
+      hsl(var(--neutral) / 0.8) 100%
+    );
 
     /* Shadows for dark mode */
     --shadow-glass: 0 8px 32px hsl(0 0% 0% / 0.3);
